@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "Fucking Notes Taker",
+    "version": "1.0.0",
+    "description": "Lets you take cool notes from screenshots",
+    "action":{
+        "default_popup": "pop.html"
+    },
+    "background":{
+        "service_worker" : "background.bundled.js",
+        "type": "module"
+    },
+    "permissions": ["storage", "tabs"],
+    "host_permissions": ["https://generativelanguage.googleapis.com/*", "http://localhost:5000/*"]
+}
