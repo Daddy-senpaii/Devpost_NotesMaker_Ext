@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import app from './firebase.js';
 import { getFirestore, Timestamp } from "firebase/firestore";
-import {doc, setDoc} from "firebase/firestore";
+import {doc, setDoc, addDoc} from "firebase/firestore";
 import firebase from 'firebase/compat/app';
 import { API_KEY } from './secret.js';
 
@@ -10,14 +10,22 @@ const db = getFirestore(app);
 
 async function SetData(data_to_stored){
 
-await setDoc(doc(db, `users/${userId}/notes`),{
-  notes: data_to_stored.output, // actual notes,
-  Timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  try{
+    const date = new Date();
+    const resolvedOuptut = await data_to_stored.output
+    await setDoc(doc(db, `user`, "user1"),{
+  notes: resolvedOuptut, // actual notes,
+  Timestamp: `${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`,
   source: data_to_stored.typeOf || "unknown",
   device: "chrome-extension",
   synced: true,
 
 } )
+console.log("successfully added");
+
+  }catch(error){
+    console.log("error",error)
+  }
 }
 
 
@@ -110,6 +118,7 @@ async function Writer_Response(RespoMessage){
     context: "Give response with well meaning and deep in context",
   });
   console.log("Response via writer api: ",result)
+  return result;
 
   
     
@@ -134,7 +143,7 @@ Example output:
 - Purpose: Prints a greeting
 - Language: JavaScript
 
-Now, extract notes from this screenshot:`  }  // Customize your prompt
+Now, extract notes from this screenshot:`  }  
       ],
       config:{
         thinkingConfig:{
@@ -145,9 +154,9 @@ Now, extract notes from this screenshot:`  }  // Customize your prompt
 
     const respoText = response.text; // Now have to preproces this thing
     console.log("Here is respo txt: ",respoText);
-    const refinedSummry = ProofReader(respoText);
-    const OutputResponse =  Summarizer_Response(refinedSummry)
-    const finalWriterResponse = Writer_Response(OutputResponse);
+    const refinedSummry = await ProofReader(respoText);
+    const OutputResponse =  await Summarizer_Response(refinedSummry)
+    const finalWriterResponse = await Writer_Response(OutputResponse);
 
     console.log(finalWriterResponse);
     // Summarizer_Response(respoText);
@@ -155,12 +164,13 @@ Now, extract notes from this screenshot:`  }  // Customize your prompt
     if(data.synced === true){
       // add to fire base cloud along with data: 
       console.log("we wiil add it to firebase cloud");
-      data_to_stored = {
+      
+      const data_to_stored = {
         output: finalWriterResponse,
         typeOf: data.data_type,
       }
 
-      SetData(data_to_stored);
+      await SetData(data_to_stored);
     }
     
     
