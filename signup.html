@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 350px;
+      height: 400px;
+      background: #f9f9f9;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #28a745;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    /* Back button styled like a navigation link */
+    .back-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 8px 16px;
+      background: #6c757d;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      background: #5a6268;
+    }
+  </style>
+</head>
+<body>
+  <h2>Sign Up</h2>
+
+
+  <input type="email" placeholder="Email" id="signupEmail">
+  <input type="password" placeholder="Password" id="signupPassword">
+  <button id="signupBtn">Sign Up</button>
+
+  <a href="pop.html" class="back-btn" id = "backSignUp">← Back</a>
+  <script src="pop.js"></script>
+
+ 
+</body>
+</html>

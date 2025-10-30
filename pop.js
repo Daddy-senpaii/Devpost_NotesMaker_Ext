@@ -1,3 +1,38 @@
+// handle sign up and connect to firebase
+const signUpBtn = document.getElementById("signupBtn");
+const backSignUp = document.getElementById("backSignUp");
+
+backSignUp.addEventListener("click",(event)=>{
+    event.preventDefault();
+    window.location.href = "pop.html";
+})
+
+signUpBtn.addEventListener("click", ()=>{
+    
+    const userEmail = document.getElementById("signupEmail").value;
+    const userPassword = document.getElementById("signupPassword").value;
+
+    console.log(userEmail, userPassword);
+
+    chrome.runtime.sendMessage({action: "signUp", userEmail: userEmail, userPassword: userPassword}, function(response){
+        try{
+            if(response.success === true){
+            alert("SignUp successfully");
+        }else{
+            alert("We having error",response.error);
+        }
+        }catch(error){
+            console.log(error);
+        }
+    });
+})
+
+
+
+
+
+
+// main page handler
 const captureScreen = document.getElementById("captureMe");
 const imageContainer = document.getElementById("image");
 

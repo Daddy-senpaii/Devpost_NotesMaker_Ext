@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main Page</title>
+  <style>
+    body {
+      width: 350px;
+      height: 400px;
+      background: #e0e0e0;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h3 { margin-bottom: 15px; color: #333; }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      background: #007bff;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover { background: #0056b3; transform: scale(1.02); }
+
+    #image {
+      margin-top: 20px;
+      width: 300px;
+      height: 200px;
+      border: 2px dashed #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f9f9f9;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h3>Welcome to the Main Page</h3>
+  <button id="captureMe">Capture Screenshot</button>
+  <div id="image">Captured image will appear here</div>
+
+  <script src="pop.js"></script>
+</body>
+</html>

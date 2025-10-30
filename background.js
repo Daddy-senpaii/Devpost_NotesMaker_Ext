@@ -4,29 +4,47 @@ import { getFirestore, Timestamp } from "firebase/firestore";
 import {doc, setDoc, addDoc} from "firebase/firestore";
 import firebase from 'firebase/compat/app';
 import { API_KEY } from './secret.js';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
-const db = getFirestore(app);
+console.log(app);
 
-async function SetData(data_to_stored){
-
+const handleFirebaseSignUp = async(userData)=>{   
+  const auth = getAuth(app);
   try{
-    const date = new Date();
-    const resolvedOuptut = await data_to_stored.output
-    await setDoc(doc(db, `user`, "user1"),{
-  notes: resolvedOuptut, // actual notes,
-  Timestamp: `${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`,
-  source: data_to_stored.typeOf || "unknown",
-  device: "chrome-extension",
-  synced: true,
+    const userCredential = await createUserWithEmailAndPassword(auth, userData.userEmail, userData.userPassword);
 
-} )
-console.log("successfully added");
-
+    console.log(userCredential.user);
+    return {success: true, user: userCredential.user};
+    
   }catch(error){
-    console.log("error",error)
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode, errorMessage);
+    return {sucess: false, error: error.code || error.message}
   }
+
 }
+
+// async function SetData(data_to_stored){
+
+//   try{
+//     const date = new Date();
+//     const resolvedOuptut = await data_to_stored.output
+//     await setDoc(doc(db, `user`, "user1"),{
+//   notes: resolvedOuptut, // actual notes,
+//   Timestamp: `${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`,
+//   source: data_to_stored.typeOf || "unknown",
+//   device: "chrome-extension",
+//   synced: true,
+
+// } )
+// console.log("successfully added");
+
+//   }catch(error){
+//     console.log("error",error)
+//   }
+// }
 
 
 
@@ -180,7 +198,20 @@ Now, extract notes from this screenshot:`  }
   }
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+  // console.log(message);
+  if(message.action === "signUp"){
+      const userEmail = message.userEmail;
+      const userPassword = message.userPassword;
+      
+      try{
+        const handleSignUp = await handleFirebaseSignUp({userEmail, userPassword});
+
+        console.log(handleSignUp);
+      }catch(error){
+        console.log(error);
+      }
+  }
   if (message.action === 'captureScreen') {
     console.log("Updataed message that we getting: ", message);
 
